@@ -55,9 +55,9 @@ void Game::PlaceFood() {
   while (true) {
     x = random_w(engine);
     y = random_h(engine);
-    // Check that the location is not occupied by a snake item before placing
+    // Check that the location is not occupied by a snake item or an obstacle before placing
     // food.
-    if (!snake.SnakeCell(x, y)) {
+    if (!snake.SnakeCell(x, y) && !IsObstacle(x, y)) {
       food.x = x;
       food.y = y;
       return;
@@ -81,7 +81,38 @@ void Game::Update() {
     snake.GrowBody();
     snake.speed += 0.02;
   }
+
+  // Check if snake hit an obstacle
+  if (CheckObstacleCollision()) {
+    snake.alive = false;
+    return;
+  }
 }
 
 int Game::GetScore() const { return score; }
 int Game::GetSize() const { return snake.size; }
+
+void Game::SetObstacles(const std::vector<SDL_Point>& obstacles) {
+  obstacles_ = obstacles;
+}
+
+bool Game::CheckObstacleCollision() {
+  int head_x = static_cast<int>(snake.head_x);
+  int head_y = static_cast<int>(snake.head_y);
+
+  for (const auto& obstacle : obstacles_) {
+    if (head_x == obstacle.x && head_y == obstacle.y) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool Game::IsObstacle(int x, int y) const {
+  for (const auto& obstacle : obstacles_) {
+    if (obstacle.x == x && obstacle.y == y) {
+      return true;
+    }
+  }
+  return false;
+}

@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <random>
+#include <vector>
 #include "SDL.h"
 #include "controller.h"
 #include "renderer.h"
@@ -15,9 +16,15 @@ class Game {
   int GetScore() const;
   int GetSize() const;
 
+  // Add these new methods to match the game.cpp implementation
+  void SetObstacles(const std::vector<SDL_Point>& obstacles);
+  bool CheckObstacleCollision();
+  bool IsObstacle(int x, int y) const;
+
  private:
   Snake snake;
   SDL_Point food;
+  std::vector<SDL_Point> obstacles_; // Add the obstacles vector
 
   std::random_device dev;
   std::mt19937 engine;

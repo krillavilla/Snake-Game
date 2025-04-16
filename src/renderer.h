@@ -13,6 +13,8 @@ class Renderer {
 
   void Render(Snake const snake, SDL_Point const &food);
   void UpdateWindowTitle(int score, int fps);
+  void SetObstacles(const std::vector<SDL_Point>& obstacles);
+
 
  private:
   SDL_Window *sdl_window;
@@ -22,6 +24,8 @@ class Renderer {
   const std::size_t screen_height;
   const std::size_t grid_width;
   const std::size_t grid_height;
+  std::vector<SDL_Point> obstacles_;
+
 };
 
 #endif

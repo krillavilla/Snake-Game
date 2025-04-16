@@ -2,18 +2,32 @@ cmake_minimum_required(VERSION 3.7)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_definitions(-std=c++17)
+project(SnakeGame VERSION 1.0)
 
-set(CXX_FLAGS "-Wall")
-set(CMAKE_CXX_FLAGS, "${CXX_FLAGS}")
-
-project(SDL2Test)
-
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
-
+# Find SDL2 package
 find_package(SDL2 REQUIRED)
-include_directories(${SDL2_INCLUDE_DIRS} src)
+include_directories(${SDL2_INCLUDE_DIRS})
 
-add_executable(SnakeGame src/main.cpp src/game.cpp src/controller.cpp src/renderer.cpp src/snake.cpp)
-string(STRIP ${SDL2_LIBRARIES} SDL2_LIBRARIES)
-target_link_libraries(SnakeGame ${SDL2_LIBRARIES})
+# Include project header files
+include_directories(${CMAKE_SOURCE_DIR}/src)
+
+# Define source files
+set(SOURCES
+        src/main.cpp
+        src/game.cpp
+        src/controller.cpp
+        src/renderer.cpp
+        src/snake.cpp
+        src/obstacle.cpp
+        src/speed_selector.cpp
+        src/high_score.cpp
+)
+
+# Create executable with a unique name to avoid conflicts
+add_executable(SnakeGameApp ${SOURCES})
+
+# Link SDL2 libraries
+target_link_libraries(SnakeGameApp ${SDL2_LIBRARIES})
+
+# Install the executable
+install(TARGETS SnakeGameApp DESTINATION bin)
